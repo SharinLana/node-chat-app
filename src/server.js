@@ -2,6 +2,7 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const Filter = require("bad-words");
 
 const app = express();
 const server = http.createServer(app);
@@ -19,7 +20,13 @@ io.on("connection", (socket) => {
   // Let existing users know that a new person has joined them (the newcomer won't see this message)
   socket.broadcast.emit("message", "A new user has joined!");
   // 7. Listen to the frontend entered message
-  socket.on("sendMessage", (msg) => {
+  socket.on("sendMessage", (msg, callback) => {
+    // Checking for the profanity:
+    const filter = new Filter();
+    if (filter.isProfane(msg)) {
+      // Return a warning and stop the following code from execution
+      return callback("Profanity is not allowed!")
+    }
     // 8. Make it visible to all users
     io.emit("message", msg);
   });
