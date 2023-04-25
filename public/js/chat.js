@@ -13,7 +13,13 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const inputMessage = e.target.elements.msg.value;
   // 6. Emit the new event, sending the input value to the backend
-  socket.emit("sendMessage", inputMessage);
+  socket.emit("sendMessage", inputMessage, (swearWordsDetected) => {
+    if (swearWordsDetected) {
+      console.log(swearWordsDetected);
+    } else {
+      console.log("Message delivered to the server!");
+    }
+  });
 });
 
 // Sharing the user's location
@@ -26,6 +32,8 @@ geoBtn.addEventListener("click", () => {
     socket.emit("sendLocation", {
       lat: position.coords.latitude,
       long: position.coords.longitude,
+    }, () => {
+        console.log("Location shared!")
     });
   });
 });

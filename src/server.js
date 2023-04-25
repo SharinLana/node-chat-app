@@ -21,7 +21,7 @@ io.on("connection", (socket) => {
   socket.broadcast.emit("message", "A new user has joined!");
   // 7. Listen to the frontend entered message
   socket.on("sendMessage", (msg, callback) => {
-    // Checking for the profanity:
+    // Checking for the profanity using bad-words package:
     const filter = new Filter();
     if (filter.isProfane(msg)) {
       // Return a warning and stop the following code from execution
@@ -29,6 +29,7 @@ io.on("connection", (socket) => {
     }
     // 8. Make it visible to all users
     io.emit("message", msg);
+    callback(); //if no profanity, send an empty callback to the client 
   });
   // 9. Listen for the user disconnection
   socket.on("disconnect", () => {
@@ -36,8 +37,9 @@ io.on("connection", (socket) => {
     io.emit("message", "A user has left!");
   });
   // 11. Listen for the "sendLocation" event
-  socket.on("sendLocation", ({ lat, long }) => {
+  socket.on("sendLocation", ({ lat, long }, callback) => {
     io.emit("message", `https://google.com/maps?q=${lat},${long}`);
+    callback();
   });
 });
 
