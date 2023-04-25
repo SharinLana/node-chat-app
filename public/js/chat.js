@@ -23,6 +23,6 @@ geoBtn.addEventListener("click", () => {
   }
 
   navigator.geolocation.getCurrentPosition((position) => {
-    console.log(position);
+    socket.emit("sendLocation", {lat: position.coords.latitude, long: position.coords.longitude})
   });
 });

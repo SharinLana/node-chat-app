@@ -26,8 +26,12 @@ io.on("connection", (socket) => {
   // 9. Listen for the user disconnection
   socket.on("disconnect", () => {
     // 10.Let all remaining users know that the person has left
-    io.emit("message", "A user has left!")
-  })
+    io.emit("message", "A user has left!");
+  });
+  // 11. Listen for the "sendLocation" event
+  socket.on("sendLocation", ({ lat, long }) => {
+    io.emit("message", `Location: long ${long}, lat ${lat}`);
+  });
 });
 
 const start = async () => {
