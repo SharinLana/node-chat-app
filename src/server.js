@@ -12,8 +12,9 @@ const publicDirectory = path.join(__dirname, "../public");
 
 app.use(express.static(publicDirectory));
 
-io.on("connection", () => {
+io.on("connection", (socket) => {
   console.log("Web Socket Connected!");
+  socket.emit("countUpdated");
 });
 
 const start = async () => {
