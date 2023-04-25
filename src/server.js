@@ -21,8 +21,8 @@ io.on("connection", (socket) => {
   // getting data from the client:
   socket.on("increment", () => {
     count++;
-    // emitting updated data back to the client:
-    socket.emit("countUpdated", count);
+    // emitting updated data back to every client running in different browsers:
+    io.emit("countUpdated", count);
   });
 });
 
