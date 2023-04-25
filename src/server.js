@@ -17,6 +17,13 @@ let count = 0;
 io.on("connection", (socket) => {
   console.log("Web Socket Connected!");
   socket.emit("countUpdated", count);
+
+  // getting data from the client:
+  socket.on("increment", () => {
+    count++;
+    // emitting updated data back to the client:
+    socket.emit("countUpdated", count);
+  });
 });
 
 const start = async () => {
