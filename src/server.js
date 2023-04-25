@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
   });
   // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }) => {
-    io.emit("message", `Location: long ${long}, lat ${lat}`);
+    io.emit("message", `https://google.com/maps?q=${lat},${long}`);
   });
 });
 
