@@ -12,17 +12,14 @@ const publicDirectory = path.join(__dirname, "../public");
 
 app.use(express.static(publicDirectory));
 
-let count = 0;
-
+// 1. Make a connection to the client
 io.on("connection", (socket) => {
-  console.log("Web Socket Connected!");
-  socket.emit("countUpdated", count);
-
-  // getting data from the client:
-  socket.on("increment", () => {
-    count++;
-    // emitting updated data back to every client running in different browsers:
-    io.emit("countUpdated", count);
+  // 3. Emit the event
+  socket.emit("message", "Welcome!");
+  // 7. Listen to the frontend entered message
+  socket.on("sendMessage", (msg) => {
+    // 8. Make it visible to all users
+    io.emit("message", msg);
   });
 });
 
