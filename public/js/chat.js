@@ -17,6 +17,11 @@ socket.on("message", (message) => {
   const html = Mustache.render(messageTemplate, { message });
   messages.insertAdjacentHTML("beforeend", html);
 });
+
+socket.on("locationMessage", (url) => {
+  console.log(url)
+})
+
 // 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
   e.preventDefault();
