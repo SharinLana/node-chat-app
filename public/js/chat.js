@@ -1,13 +1,21 @@
+// Elements
 const form = document.querySelector("#form");
 const btn = document.querySelector("#btn");
 const geoBtn = document.querySelector("#geo-btn");
 const messageInput = document.querySelector("#msg");
+const messages = document.querySelector("#messages");
+
+// Templates
+const messageTemplate = document.querySelector("#message-template").innerHTML;
 
 // 2. Establish a connection to the backend
 const socket = io();
 // 4. Receive a first message from the backend
 socket.on("message", (message) => {
   console.log(message);
+  // Rendering messages in HTML
+  const html = Mustache.render(messageTemplate);
+  messages.insertAdjacentHTML("beforeend", html);
 });
 // 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
