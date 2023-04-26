@@ -34,9 +34,13 @@ const getUser = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room)
 
+// addUser({ id: 1, username: "Michael", room: "chat" });
+// addUser({ id: 2, username: "Sophia", room: "chat" });
+// console.log(users);
+
+// console.log(removeUser(1));
+// console.log(users);
 addUser({ id: 1, username: "Michael", room: "chat" });
 addUser({ id: 2, username: "Sophia", room: "chat" });
-console.log(users);
-
-console.log(removeUser(1));
-console.log(users);
+console.log(getUser(1));
+console.log(getUsersInRoom("chat"));
