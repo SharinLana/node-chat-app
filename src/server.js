@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
     // Send event to everyone except the new client
     socket.broadcast
       .to(user.room)
-      .emit("message", generateMessage(`${user.username} has joined!`));
+      .emit("message", generateMessage("Admin",`${user.username} has joined!`));
     callback(); //if no profanity, send an empty callback to the client
   });
 
