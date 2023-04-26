@@ -11,7 +11,7 @@ const addUser = ({ id, username, room }) => {
   }
 
   // Check for existing user
-  const existingUser = users.find((user) => user.id === id);
+  const existingUser = users.find((user) => user.username === username);
   if (existingUser) {
     return { error: "This name has been taken!" };
   }

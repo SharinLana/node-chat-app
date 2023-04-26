@@ -41,6 +41,7 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(user.room)
       .emit("message", generateMessage(`${user.username} has joined!`));
+    callback(); //if no profanity, send an empty callback to the client
   });
 
   // 7. Listen for the "sendMessage" event
@@ -61,7 +62,10 @@ io.on("connection", (socket) => {
     const user = removeUser(socket.id);
     if (user) {
       // 10.Let all remaining users know that the person has left
-      io.to(user.room).emit("message", generateMessage(`${user.username} has left!`));
+      io.to(user.room).emit(
+        "message",
+        generateMessage(`${user.username} has left!`)
+      );
     }
   });
 
