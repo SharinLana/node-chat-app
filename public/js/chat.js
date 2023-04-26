@@ -12,18 +12,18 @@ const locationTemplate = document.querySelector("#location-template").innerHTML;
 // 2. Establish a connection to the backend
 const socket = io();
 // 4. Receive a first message from the backend
-socket.on("message", (message) => {
-  console.log(message);
+socket.on("message", ({ text, createdAt }) => {
+  
   // Rendering messages in HTML
-  const html = Mustache.render(messageTemplate, { message });
+  const html = Mustache.render(messageTemplate, { message: text });
   messages.insertAdjacentHTML("beforeend", html);
 });
 
 socket.on("locationMessage", (url) => {
   console.log(url);
-  const html = Mustache.render(locationTemplate, {url});
-  messages.insertAdjacentHTML("beforeend", html)
-})
+  const html = Mustache.render(locationTemplate, { url });
+  messages.insertAdjacentHTML("beforeend", html);
+});
 
 // 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
