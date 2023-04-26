@@ -7,6 +7,12 @@ const {
   generateMessage,
   generateLocationMessage,
 } = require("./utils/messages");
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +32,9 @@ io.on("connection", (socket) => {
     socket.emit("message", generateMessage("Welcome!"));
     // Let existing users know that a new person has joined them (the newcomer won't see this message)
     // Send event to everyone except the new client
-    socket.broadcast.to(room).emit("message", generateMessage(`${username} has joined!`));
+    socket.broadcast
+      .to(room)
+      .emit("message", generateMessage(`${username} has joined!`));
   });
 
   // 7. Listen for the "sendMessage" event
@@ -47,7 +55,7 @@ io.on("connection", (socket) => {
     // 10.Let all remaining users know that the person has left
     io.emit("message", generateMessage("A user has left!"));
   });
-  
+
   // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }, callback) => {
     io.emit(
