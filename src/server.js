@@ -46,15 +46,19 @@ io.on("connection", (socket) => {
 
   // 7. Listen for the "sendMessage" event
   socket.on("sendMessage", (msg, callback) => {
-    // Checking for the profanity using bad-words package:
-    const filter = new Filter();
-    if (filter.isProfane(msg)) {
-      // Return a warning and stop the following code from execution
-      return callback("Profanity is not allowed!");
+    const user = getUser(socket.id);
+
+    if (user) {
+      // Checking for the profanity using bad-words package:
+      const filter = new Filter();
+      if (filter.isProfane(msg)) {
+        // Return a warning and stop the following code from execution
+        return callback("Profanity is not allowed!");
+      }
+      // 8. Make it visible to all users
+      io.to(user.room).emit("message", generateMessage(msg));
+      callback(); //if no profanity, send an empty callback to the client
     }
-    // 8. Make it visible to all users
-    io.emit("message", generateMessage(msg));
-    callback(); //if no profanity, send an empty callback to the client
   });
 
   // 9. Listen for the user disconnection
@@ -71,11 +75,15 @@ io.on("connection", (socket) => {
 
   // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }, callback) => {
-    io.emit(
-      "locationMessage",
-      generateLocationMessage(`https://google.com/maps?q=${lat},${long}`)
-    );
-    callback();
+    const user = getUser(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        "locationMessage",
+        generateLocationMessage(user.username, `https://google.com/maps?q=${lat},${long}`)
+      );
+      callback();
+    }
   });
 });
 
