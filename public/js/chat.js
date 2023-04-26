@@ -18,7 +18,6 @@ form.addEventListener("submit", (e) => {
   const inputMessage = e.target.elements.msg.value;
   // 6. Emit the new event, sending the input value to the backend
   socket.emit("sendMessage", inputMessage, (swearWordsDetected) => {
-    
     btn.removeAttribute("disabled");
 
     messageInput.value = "";
@@ -34,6 +33,8 @@ form.addEventListener("submit", (e) => {
 
 // Sharing the user's location
 geoBtn.addEventListener("click", () => {
+  geoBtn.setAttribute("disabled", "disabled");
+
   if (!navigator.geolocation) {
     return alert("Your browser does not support geolocation");
   }
@@ -47,6 +48,7 @@ geoBtn.addEventListener("click", () => {
       },
       () => {
         console.log("Location shared!");
+        geoBtn.removeAttribute("disabled");
       }
     );
   });
