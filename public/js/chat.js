@@ -33,7 +33,7 @@ socket.on("locationMessage", ({ url, createdAt }) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  btn.setAttribute("disabled", "disbled"); // attr name - attr value
+  btn.setAttribute("disabled", "disabled"); // attr name - attr value
 
   const inputMessage = e.target.elements.msg.value;
   // 6. Emit the new event, sending the input value to the backend
