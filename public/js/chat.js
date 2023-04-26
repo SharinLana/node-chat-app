@@ -14,7 +14,7 @@ const socket = io();
 socket.on("message", (message) => {
   console.log(message);
   // Rendering messages in HTML
-  const html = Mustache.render(messageTemplate);
+  const html = Mustache.render(messageTemplate, { message });
   messages.insertAdjacentHTML("beforeend", html);
 });
 // 5. Create a form in index.html
