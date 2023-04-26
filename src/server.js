@@ -41,11 +41,13 @@ io.on("connection", (socket) => {
     io.emit("message", generateMessage(msg));
     callback(); //if no profanity, send an empty callback to the client
   });
+
   // 9. Listen for the user disconnection
   socket.on("disconnect", () => {
     // 10.Let all remaining users know that the person has left
     io.emit("message", generateMessage("A user has left!"));
   });
+  
   // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }, callback) => {
     io.emit(
