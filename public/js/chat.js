@@ -9,6 +9,12 @@ const messages = document.querySelector("#messages");
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
 
+// Options
+// Use qs library to parse the query string in the location.search
+const { username, room } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+}); // ignoreQueryPrefix: true = removed ? mark from the string
+
 // 2. Establish a connection to the backend
 const socket = io();
 // 4. Receive a first message from the backend
