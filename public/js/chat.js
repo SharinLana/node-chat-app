@@ -18,9 +18,10 @@ const { username, room } = Qs.parse(location.search, {
 // 2. Establish a connection to the backend
 const socket = io();
 // 4. Receive a first message from the backend
-socket.on("message", ({ text, createdAt }) => {
+socket.on("message", ({ username, text, createdAt }) => {
   // Rendering messages in HTML
   const html = Mustache.render(messageTemplate, {
+    userName: username,
     message: text,
     createdAt: moment(createdAt).format("h:mm a"), // by using the moment library
   });

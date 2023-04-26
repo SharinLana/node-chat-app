@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
 
     socket.join(user.room);
     // 3. Emit the event (visible only for the particular user)
-    socket.emit("message", generateMessage("Welcome!"));
+    socket.emit("message", generateMessage(`Welcome, ${user.username}!`));
     // Let existing users know that a new person has joined them (the newcomer won't see this message)
     // Send event to everyone except the new client
     socket.broadcast
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
         return callback("Profanity is not allowed!");
       }
       // 8. Make it visible to all users
-      io.to(user.room).emit("message", generateMessage(msg));
+      io.to(user.room).emit("message", generateMessage(user.username, msg));
       callback(); //if no profanity, send an empty callback to the client
     }
   });
