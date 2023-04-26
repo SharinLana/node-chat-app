@@ -3,7 +3,10 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
-const { generateMessage, generateLocationMessage } = require("./utils/messages");
+const {
+  generateMessage,
+  generateLocationMessage,
+} = require("./utils/messages");
 
 const app = express();
 const server = http.createServer(app);
@@ -16,12 +19,17 @@ app.use(express.static(publicDirectory));
 
 // 1. Make a connection to the client
 io.on("connection", (socket) => {
-  // 3. Emit the event (visible only for the particular user)
-  socket.emit("message", generateMessage("Welcome!"));
-  // Let existing users know that a new person has joined them (the newcomer won't see this message)
-  // Send event to everyone except the new client
-  socket.broadcast.emit("message", generateMessage("A new user has joined!"));
-  // 7. Listen to the frontend entered message
+  // Listen for the "joinRoom" event
+  socket.on("joinRoom", ({ username, room }, callback) => {
+    socket.join(room);
+    // 3. Emit the event (visible only for the particular user)
+    socket.emit("message", generateMessage("Welcome!"));
+    // Let existing users know that a new person has joined them (the newcomer won't see this message)
+    // Send event to everyone except the new client
+    socket.broadcast.to(room).emit("message", generateMessage(`${username} has joined!`));
+  });
+
+  // 7. Listen for the "sendMessage" event
   socket.on("sendMessage", (msg, callback) => {
     // Checking for the profanity using bad-words package:
     const filter = new Filter();
@@ -40,7 +48,10 @@ io.on("connection", (socket) => {
   });
   // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }, callback) => {
-    io.emit("locationMessage", generateLocationMessage(`https://google.com/maps?q=${lat},${long}`));
+    io.emit(
+      "locationMessage",
+      generateLocationMessage(`https://google.com/maps?q=${lat},${long}`)
+    );
     callback();
   });
 });
