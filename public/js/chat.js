@@ -79,3 +79,5 @@ geoBtn.addEventListener("click", () => {
     );
   });
 });
+
+socket.emit("joinRoom", { username, room }, () => {});

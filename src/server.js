@@ -16,9 +16,10 @@ app.use(express.static(publicDirectory));
 
 // 1. Make a connection to the client
 io.on("connection", (socket) => {
-  // 3. Emit the event
+  // 3. Emit the event (visible only for the particular user)
   socket.emit("message", generateMessage("Welcome!"));
   // Let existing users know that a new person has joined them (the newcomer won't see this message)
+  // Send event to everyone except the new client
   socket.broadcast.emit("message", generateMessage("A new user has joined!"));
   // 7. Listen to the frontend entered message
   socket.on("sendMessage", (msg, callback) => {
@@ -50,3 +51,13 @@ const start = async () => {
   });
 };
 start();
+
+/*
+Emitting events:
+
+socket.emit("message", message); => Emit a message to the particular client
+io.emit("message", message); => Emit a message to all the clients
+socket.broadcast.emit("message", message); => Emit a message to all the clients except for the particular client
+io.to("room1").emit("message", message); => Emit a message to all the users in a particular room
+socket.broadcast.to("room1").emit("message", message); => Emit a message to all clients in a specific room
+*/
