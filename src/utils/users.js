@@ -30,6 +30,10 @@ const removeUser = (id) => {
   }
 };
 
+const getUser = (id) => users.find((user) => user.id === id);
+
+const getUsersInRoom = (room) => users.filter((user) => user.room === room)
+
 addUser({ id: 1, username: "Michael", room: "chat" });
 addUser({ id: 2, username: "Sophia", room: "chat" });
 console.log(users);
