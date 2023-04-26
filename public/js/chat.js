@@ -13,9 +13,11 @@ const locationTemplate = document.querySelector("#location-template").innerHTML;
 const socket = io();
 // 4. Receive a first message from the backend
 socket.on("message", ({ text, createdAt }) => {
-  
   // Rendering messages in HTML
-  const html = Mustache.render(messageTemplate, { message: text });
+  const html = Mustache.render(messageTemplate, {
+    message: text,
+    createdAt: moment(createdAt).format("h:mm a"), // by using the moment library
+  });
   messages.insertAdjacentHTML("beforeend", html);
 });
 
