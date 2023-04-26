@@ -21,6 +21,9 @@ form.addEventListener("submit", (e) => {
     
     btn.removeAttribute("disabled");
 
+    messageInput.value = "";
+    messageInput.focue();
+    
     if (swearWordsDetected) {
       console.log(swearWordsDetected);
     } else {
