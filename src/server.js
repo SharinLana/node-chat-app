@@ -58,8 +58,11 @@ io.on("connection", (socket) => {
 
   // 9. Listen for the user disconnection
   socket.on("disconnect", () => {
-    // 10.Let all remaining users know that the person has left
-    io.emit("message", generateMessage("A user has left!"));
+    const user = removeUser(socket.id);
+    if (user) {
+      // 10.Let all remaining users know that the person has left
+      io.to(user.room).emit("message", generateMessage(`${user.username} has left!`));
+    }
   });
 
   // 11. Listen for the "sendLocation" event
