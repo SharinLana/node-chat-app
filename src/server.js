@@ -35,7 +35,10 @@ io.on("connection", (socket) => {
 
     socket.join(user.room);
     // 3. Emit the event (visible only for the particular user)
-    socket.emit("message", generateMessage(`Welcome, ${user.username}!`));
+    socket.emit(
+      "message",
+      generateMessage("Admin", `Welcome, ${user.username}!`)
+    );
     // Let existing users know that a new person has joined them (the newcomer won't see this message)
     // Send event to everyone except the new client
     socket.broadcast
@@ -80,7 +83,10 @@ io.on("connection", (socket) => {
     if (user) {
       io.to(user.room).emit(
         "locationMessage",
-        generateLocationMessage(user.username,`https://google.com/maps?q=${lat},${long}`)
+        generateLocationMessage(
+          user.username,
+          `https://google.com/maps?q=${lat},${long}`
+        )
       );
       callback();
     }
