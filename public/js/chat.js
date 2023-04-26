@@ -7,6 +7,7 @@ const messages = document.querySelector("#messages");
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML;
 
 // 2. Establish a connection to the backend
 const socket = io();
@@ -19,7 +20,9 @@ socket.on("message", (message) => {
 });
 
 socket.on("locationMessage", (url) => {
-  console.log(url)
+  console.log(url);
+  const html = Mustache.render(locationTemplate, {url});
+  messages.insertAdjacentHTML("beforeend", html)
 })
 
 // 5. Create a form in index.html
