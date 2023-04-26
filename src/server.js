@@ -27,14 +27,20 @@ app.use(express.static(publicDirectory));
 io.on("connection", (socket) => {
   // Listen for the "joinRoom" event
   socket.on("joinRoom", ({ username, room }, callback) => {
-    socket.join(room);
+    const { error, user } = addUser({ id: socket.id, username, room });
+
+    if (error) {
+      return callback(error);
+    }
+
+    socket.join(user.room);
     // 3. Emit the event (visible only for the particular user)
     socket.emit("message", generateMessage("Welcome!"));
     // Let existing users know that a new person has joined them (the newcomer won't see this message)
     // Send event to everyone except the new client
     socket.broadcast
-      .to(room)
-      .emit("message", generateMessage(`${username} has joined!`));
+      .to(user.room)
+      .emit("message", generateMessage(`${user.username} has joined!`));
   });
 
   // 7. Listen for the "sendMessage" event
