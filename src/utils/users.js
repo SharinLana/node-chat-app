@@ -33,3 +33,6 @@ const removeUser = (id) => {
 addUser({ id: 1, username: "Michael", room: "chat" });
 addUser({ id: 2, username: "Sophia", room: "chat" });
 console.log(users);
+
+console.log(removeUser(1));
+console.log(users);
