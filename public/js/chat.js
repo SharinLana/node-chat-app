@@ -15,7 +15,36 @@ const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 // Use qs library to parse the query string in the location.search
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
-}); // ignoreQueryPrefix: true = removed ? mark from the string
+}); // ignoreQueryPrefix: true = removed "?" mark from the string
+
+// Automatically scroll down to the bottom of the page, 
+// so that the user can see the latest messages.
+// BUT. Stop automatically scrolling when the user manually scrolls up 
+// (to find one of the previous messages from the history)
+const autoscroll = () => {
+  // New message element
+  const newMessage = messages.lastElementChild;
+
+  // Height of the new message
+  const newMessageStyles = getComputedStyle(newMessage);
+  // console.log(newMessageStyles)
+  const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+  const newMessageHeight = newMessage.offsetHeight + newMessageMargin;
+
+  // Visible height
+  const visibleHeight = messages.offsetHeight;
+
+  // Height of the messages container
+  const containerHeight = messages.scrollHeight;
+
+  // How far have I scrolled?
+  const scrollOffset = messages.scrollTop + visibleHeight;
+
+  // Scroll to the bottom
+  if (containerHeight - newMessageHeight <= scrollOffset) {
+    messages.scrollTop = messages.scrollHeight;
+  }
+};
 
 // 2. Establish a connection to the backend
 const socket = io();
@@ -28,6 +57,7 @@ socket.on("message", ({ username, text, createdAt }) => {
     createdAt: moment(createdAt).format("h:mm a"), // by using the moment library
   });
   messages.insertAdjacentHTML("beforeend", html);
+  autoscroll();
 });
 
 socket.on("locationMessage", ({ username, url, createdAt }) => {
@@ -37,6 +67,7 @@ socket.on("locationMessage", ({ username, url, createdAt }) => {
     createdAt: moment(createdAt).format("h:mm a"),
   });
   messages.insertAdjacentHTML("beforeend", html);
+  autoscroll();
 });
 
 socket.on("roomData", ({ room, users }) => {
