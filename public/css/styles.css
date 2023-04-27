@@ -160,6 +160,10 @@ button:disabled {
   font-size: 14px;
 }
 
+#warning {
+  display: none;
+}
+
 /* Chat Sidebar Styles */
 
 .room-title {

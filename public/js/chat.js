@@ -5,6 +5,7 @@ const geoBtn = document.querySelector("#geo-btn");
 const messageInput = document.querySelector("#msg");
 const messages = document.querySelector("#messages");
 const sidebar = document.querySelector("#sidebar");
+const warning = document.querySelector("#warning");
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
@@ -92,12 +93,18 @@ form.addEventListener("submit", (e) => {
     messageInput.focus();
 
     if (swearWordsDetected) {
-      console.log(swearWordsDetected);
+      warning.style.display = "block";
+      warning.innerHTML = swearWordsDetected;
     } else {
       console.log("Message delivered to the server!");
     }
   });
 });
+
+// Hiding the profanity warning message 
+messageInput.addEventListener("input", () => {
+  warning.style.display = "none";
+})
 
 geoBtn.addEventListener("click", () => {
   geoBtn.setAttribute("disabled", "disabled");

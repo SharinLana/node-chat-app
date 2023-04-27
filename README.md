@@ -32,4 +32,5 @@ https://real-time-chat-app-ew17.onrender.com/
 - displaying the user's name for each message
 - greeting and goodbye notification from admin on user enter and leave
 - share location option (each user can share their location with other users in the room)
+- autoscrolling
 - responsive design (mobile adaptation)
