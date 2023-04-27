@@ -23,9 +23,7 @@ const publicDirectory = path.join(__dirname, "../public");
 
 app.use(express.static(publicDirectory));
 
-// 1. Make a connection to the client
 io.on("connection", (socket) => {
-  // Listen for the "joinRoom" event
   socket.on("joinRoom", ({ username, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, username, room });
 
@@ -34,7 +32,7 @@ io.on("connection", (socket) => {
     }
 
     socket.join(user.room);
-    // 3. Emit the event (visible only for the particular user)
+
     socket.emit(
       "message",
       generateMessage("Admin", `Welcome, ${user.username}!`)
@@ -54,24 +52,20 @@ io.on("connection", (socket) => {
     callback(); //if no profanity, send an empty callback to the client
   });
 
-  // 7. Listen for the "sendMessage" event
   socket.on("sendMessage", (msg, callback) => {
     const user = getUser(socket.id);
 
     if (user) {
-      // Checking for the profanity using bad-words package:
       const filter = new Filter();
       if (filter.isProfane(msg)) {
-        // Return a warning and stop the following code from execution
         return callback("Profanity is not allowed!");
       }
-      // 8. Make it visible to all users
+
       io.to(user.room).emit("message", generateMessage(user.username, msg));
-      callback(); //if no profanity, send an empty callback to the client
+      callback();
     }
   });
 
-  // 9. Listen for the user disconnection
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
     if (user) {
@@ -87,7 +81,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // 11. Listen for the "sendLocation" event
   socket.on("sendLocation", ({ lat, long }, callback) => {
     const user = getUser(socket.id);
 

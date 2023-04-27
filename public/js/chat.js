@@ -17,9 +17,9 @@ const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 }); // ignoreQueryPrefix: true = removed "?" mark from the string
 
-// Automatically scroll down to the bottom of the page, 
+// Automatically scroll down to the bottom of the page,
 // so that the user can see the latest messages.
-// BUT. Stop automatically scrolling when the user manually scrolls up 
+// BUT. Stop automatically scrolling when the user manually scrolls up
 // (to find one of the previous messages from the history)
 const autoscroll = () => {
   // New message element
@@ -46,9 +46,8 @@ const autoscroll = () => {
   }
 };
 
-// 2. Establish a connection to the backend
 const socket = io();
-// 4. Receive a first message from the backend
+
 socket.on("message", ({ username, text, createdAt }) => {
   // Rendering messages in HTML
   const html = Mustache.render(messageTemplate, {
@@ -62,8 +61,8 @@ socket.on("message", ({ username, text, createdAt }) => {
 
 socket.on("locationMessage", ({ username, url, createdAt }) => {
   const html = Mustache.render(locationTemplate, {
-    userName: username,
-    url: url, //from template: from server
+    userName: username, // from template: from server
+    url,
     createdAt: moment(createdAt).format("h:mm a"),
   });
   messages.insertAdjacentHTML("beforeend", html);
@@ -79,14 +78,13 @@ socket.on("roomData", ({ room, users }) => {
   sidebar.innerHTML = html;
 });
 
-// 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   btn.setAttribute("disabled", "disabled"); // attr name - attr value
 
   const inputMessage = e.target.elements.msg.value;
-  // 6. Emit the new event, sending the input value to the backend
+
   socket.emit("sendMessage", inputMessage, (swearWordsDetected) => {
     btn.removeAttribute("disabled");
 
@@ -101,7 +99,6 @@ form.addEventListener("submit", (e) => {
   });
 });
 
-// Sharing the user's location
 geoBtn.addEventListener("click", () => {
   geoBtn.setAttribute("disabled", "disabled");
 
