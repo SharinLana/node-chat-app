@@ -140,10 +140,12 @@ button:disabled {
   flex-shrink: 0;
   margin-top: 16px;
   padding: 24px;
+  padding-top: 5px;
 }
 
 .compose form {
   display: flex;
+  width: 100%;
   flex-grow: 1;
   margin-right: 16px;
 }
@@ -160,8 +162,17 @@ button:disabled {
   font-size: 14px;
 }
 
-#warning {
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profanity-warning {
   display: none;
+  padding-left: 24px;
+  margin: 0px;
+  color: #7c5cbf;
 }
 
 /* Chat Sidebar Styles */
