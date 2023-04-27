@@ -43,7 +43,14 @@ io.on("connection", (socket) => {
     // Send event to everyone except the new client
     socket.broadcast
       .to(user.room)
-      .emit("message", generateMessage("Admin",`${user.username} has joined!`));
+      .emit(
+        "message",
+        generateMessage("Admin", `${user.username} has joined!`)
+      );
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: getUsersInRoom(user.room),
+    });
     callback(); //if no profanity, send an empty callback to the client
   });
 
@@ -71,8 +78,12 @@ io.on("connection", (socket) => {
       // 10.Let all remaining users know that the person has left
       io.to(user.room).emit(
         "message",
-        generateMessage(`${user.username} has left!`)
+        generateMessage("Admin", `${user.username} has left!`)
       );
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUsersInRoom(user.room),
+      });
     }
   });
 
