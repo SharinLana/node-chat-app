@@ -181,3 +181,38 @@ button:disabled {
   font-weight: 300;
   padding: 12px 24px 0 24px;
 }
+
+@media all and (max-width: 600px) {
+  .chat__sidebar {
+    width: 125px;
+  }
+
+  .room-title {
+    font-size: 18px;
+  }
+
+  .users {
+    font-size: 14px;
+  }
+
+  .list-title {
+    font-size: 16px;
+  }
+
+  .compose {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #btn {
+    margin-top: 8px;
+  }
+}
