@@ -4,10 +4,12 @@ const btn = document.querySelector("#btn");
 const geoBtn = document.querySelector("#geo-btn");
 const messageInput = document.querySelector("#msg");
 const messages = document.querySelector("#messages");
+const sidebar = document.querySelector("#sidebar");
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 // Options
 // Use qs library to parse the query string in the location.search
@@ -38,9 +40,13 @@ socket.on("locationMessage", ({ username, url, createdAt }) => {
 });
 
 socket.on("roomData", ({ room, users }) => {
-  console.log(users)
-  console.log(room)
-})
+  const html = Mustache.render(sidebarTemplate, {
+    room,
+    users,
+  });
+
+  sidebar.innerHTML = html;
+});
 
 // 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
