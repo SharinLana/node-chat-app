@@ -37,6 +37,11 @@ socket.on("locationMessage", ({ username, url, createdAt }) => {
   messages.insertAdjacentHTML("beforeend", html);
 });
 
+socket.on("roomData", ({ room, users }) => {
+  console.log(users)
+  console.log(room)
+})
+
 // 5. Create a form in index.html
 form.addEventListener("submit", (e) => {
   e.preventDefault();
